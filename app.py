@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-DB_PATH = "trades.db"
+DB_PATH = "/home/Raynecodinglab/forward-testing-website/trades.db"
 
 # ─── Database Setup ───────────────────────────────────────────────────────────
 
