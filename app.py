@@ -60,9 +60,13 @@ def webhook():
     if not ticker or not action or price is None:
         return jsonify({"error": "Missing required fields: ticker, action, price"}), 400
 
-    if action not in ("long", "short", "flat"):
-        return jsonify({"error": f"Unknown action '{action}'"}), 400
+if action not in ("long", "short", "flat", "tp1", "tp2"):
+    return jsonify({"error": f"Unknown action '{action}'"}), 400
 
+if action in ("tp1", "tp2"):
+    conn.close()
+    return jsonify({"ok": True, "message": f"Partial exit {action} ignored"}), 200
+    
     conn = get_db()
     now  = datetime.utcnow().isoformat()
 
