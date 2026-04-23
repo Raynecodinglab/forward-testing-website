@@ -207,11 +207,13 @@ def api_clear():
 
 
 # ─── Frontend ─────────────────────────────────────────────────────────────────
-
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("landing.html")
 
+@app.route("/algox")
+def algox():
+    return render_template("index.html")
 
 # ─── Entry ────────────────────────────────────────────────────────────────────
 
