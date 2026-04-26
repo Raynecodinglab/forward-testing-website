@@ -17,6 +17,8 @@
       --green:     #00ff88;
       --green-dim: #00cc6a;
       --green-glow:#00ff8833;
+      --blue:      #00b0ff;
+      --blue-glow: #00b0ff33;
       --red:       #ff4466;
       --text:      #e8e8e8;
       --muted:     #666;
@@ -34,7 +36,6 @@
       overflow-x: hidden;
     }
 
-    /* ── NOISE OVERLAY ── */
     body::before {
       content: '';
       position: fixed;
@@ -45,7 +46,6 @@
       opacity: 0.4;
     }
 
-    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -60,534 +60,119 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .nav-brand {
-      font-family: var(--mono);
-      font-size: 1rem;
-      color: var(--green);
-      letter-spacing: 0.1em;
-      text-decoration: none;
-    }
+    .nav-brand { font-family: var(--mono); font-size: 1rem; color: var(--green); letter-spacing: 0.1em; text-decoration: none; }
+    .nav-brand span { color: var(--muted); font-weight: 300; }
 
-    .nav-brand span {
-      color: var(--muted);
-    }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
 
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
+    .nav-links a { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
     .nav-links a:hover { color: var(--text); }
 
-    .nav-discord {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      border: 1px solid var(--border2);
-      border-radius: 4px;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text) !important;
-      text-decoration: none;
-      transition: border-color 0.2s, color 0.2s !important;
-    }
+    .nav-discord { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border: 1px solid var(--border2); border-radius: 4px; font-family: var(--mono); font-size: 0.72rem; color: var(--text) !important; text-decoration: none; transition: border-color 0.2s, color 0.2s !important; }
+    .nav-discord:hover { border-color: var(--green) !important; color: var(--green) !important; }
 
-    .nav-discord:hover {
-      border-color: var(--green) !important;
-      color: var(--green) !important;
-    }
+    .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 2.5rem 4rem; max-width: 1100px; margin: 0 auto; }
 
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 8rem 2.5rem 4rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+    .hero-tag { font-family: var(--mono); font-size: 0.72rem; color: var(--green); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s ease forwards 0.2s; }
+    .hero-tag::before { content: '> '; color: var(--muted); }
 
-    .hero-tag {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--green);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.2s;
-    }
+    .hero h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s ease forwards 0.35s; }
+    .hero h1 em { font-style: normal; color: var(--green); }
 
-    .hero-tag::before {
-      content: '> ';
-      color: var(--muted);
-    }
+    .hero-sub { font-family: var(--mono); font-size: 0.9rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.6s ease forwards 0.5s; }
 
-    .hero h1 {
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.35s;
-    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.6s ease forwards 0.65s; }
 
-    .hero h1 em {
-      font-style: normal;
-      color: var(--green);
-    }
+    .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; background: var(--green); color: #000; font-family: var(--mono); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 4px; transition: background 0.2s, transform 0.15s; }
+    .btn-primary:hover { background: var(--green-dim); transform: translateY(-1px); }
 
-    .hero-sub {
-      font-family: var(--mono);
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 520px;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.5s;
-    }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 4px; transition: border-color 0.2s, color 0.2s; }
+    .btn-secondary:hover { border-color: var(--green); color: var(--green); }
 
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.65s;
-    }
+    .live-bar { margin-top: 4rem; padding: 1rem 1.5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; display: flex; gap: 3rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.6s ease forwards 0.8s; }
 
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.75rem;
-      background: var(--green);
-      color: #000;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background 0.2s, transform 0.15s;
-    }
+    .live-indicator { display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.7rem; color: var(--green); letter-spacing: 0.1em; }
 
-    .btn-primary:hover {
-      background: var(--green-dim);
-      transform: translateY(-1px);
-    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
 
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.75rem;
-      border: 1px solid var(--border2);
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--green);
-      color: var(--green);
-    }
-
-    /* ── LIVE TICKER ── */
-    .live-bar {
-      margin-top: 4rem;
-      padding: 1rem 1.5rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.8s;
-    }
-
-    .live-indicator {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--green);
-      letter-spacing: 0.1em;
-    }
-
-    .live-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .stat-value {
-      font-family: var(--mono);
-      font-size: 1rem;
-      color: var(--green);
-      font-weight: 700;
-    }
-
+    .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
+    .stat-label { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .stat-value { font-family: var(--mono); font-size: 1rem; color: var(--green); font-weight: 700; }
     .stat-value.red { color: var(--red); }
     .stat-value.white { color: var(--text); }
 
-    /* ── SECTION ── */
-    section {
-      position: relative;
-      padding: 5rem 2.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+    section { position: relative; padding: 5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
 
-    .section-tag {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
+    .section-tag { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
     .section-tag::before { content: '// '; }
 
-    .section-title {
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 3rem;
-    }
+    .section-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 3rem; }
 
-    /* ── DIVIDER ── */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+    .divider { border: none; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
 
-    /* ── STRATEGIES ── */
-    .strategies-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5rem;
-    }
+    .strategies-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
 
-    .strategy-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.75rem;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-      transition: border-color 0.2s, transform 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
+    .strategy-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.75rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 1.25rem; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; }
 
-    .strategy-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--green);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-
-    .strategy-card:hover {
-      border-color: var(--border2);
-      transform: translateY(-3px);
-    }
-
+    .strategy-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--green); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    .strategy-card.blue-accent::before { background: var(--blue); }
+    .strategy-card:hover { border-color: var(--border2); transform: translateY(-3px); }
     .strategy-card:hover::before { transform: scaleX(1); }
 
-    .strategy-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    .strategy-header { display: flex; align-items: center; justify-content: space-between; }
 
-    .strategy-name {
-      font-family: var(--mono);
-      font-size: 1rem;
-      color: var(--green);
-      letter-spacing: 0.05em;
-    }
+    .strategy-name { font-family: var(--mono); font-size: 1rem; color: var(--green); letter-spacing: 0.05em; }
+    .strategy-name.blue { color: var(--blue); }
 
-    .strategy-badge {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 3px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
+    .strategy-badge { font-family: var(--mono); font-size: 0.6rem; padding: 0.2rem 0.6rem; border-radius: 3px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .badge-live      { background: var(--green-glow); color: var(--green); border: 1px solid var(--green); }
+    .badge-live-blue { background: var(--blue-glow);  color: var(--blue);  border: 1px solid var(--blue); }
+    .badge-soon      { background: #1a1a1a; color: var(--muted); border: 1px solid var(--border2); }
 
-    .badge-live {
-      background: var(--green-glow);
-      color: var(--green);
-      border: 1px solid var(--green);
-    }
-
-    .badge-soon {
-      background: #1a1a1a;
-      color: var(--muted);
-      border: 1px solid var(--border2);
-    }
-
-    .strategy-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.75rem;
-    }
-
-    .strategy-stat {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .strategy-stat-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .strategy-stat-value {
-      font-family: var(--mono);
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-
+    .strategy-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+    .strategy-stat  { display: flex; flex-direction: column; gap: 0.2rem; }
+    .strategy-stat-label { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .strategy-stat-value { font-family: var(--mono); font-size: 0.95rem; color: var(--text); }
     .strategy-stat-value.green { color: var(--green); }
-    .strategy-stat-value.red { color: var(--red); }
+    .strategy-stat-value.blue  { color: var(--blue); }
+    .strategy-stat-value.red   { color: var(--red); }
     .strategy-stat-value.amber { color: #f59e0b; }
 
-    .strategy-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .strategy-pairs {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-    }
-
-    .strategy-cta {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--green);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
+    .strategy-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .strategy-pairs  { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+    .strategy-cta    { font-family: var(--mono); font-size: 0.7rem; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 0.3rem; }
+    .strategy-cta.blue { color: var(--blue); }
     .strategy-cta::after { content: ' →'; }
+    .strategy-card.coming-soon { opacity: 0.5; pointer-events: none; }
 
-    .strategy-card.coming-soon {
-      opacity: 0.5;
-      pointer-events: none;
-    }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
 
-    /* ── TEAM ── */
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
+    .team-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; }
 
-    .team-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+    .team-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 1.1rem; color: var(--green); }
 
-    .team-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--bg3);
-      border: 1px solid var(--border2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 1.1rem;
-      color: var(--green);
-    }
+    .team-name { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; }
+    .team-role { font-family: var(--mono); font-size: 0.7rem; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+    .team-desc { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+    .team-placeholder { font-family: var(--mono); font-size: 0.7rem; color: var(--border2); font-style: italic; }
 
-    .team-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
+    .contact-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 3rem; display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem; max-width: 600px; }
+    .contact-box p { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); line-height: 1.8; }
 
-    .team-role {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--green);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
+    .discord-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.75rem; background: #5865F2; color: #fff; font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; text-decoration: none; border-radius: 6px; transition: background 0.2s, transform 0.15s; }
+    .discord-btn:hover { background: #4752c4; transform: translateY(-1px); }
+    .discord-icon { width: 18px; height: 18px; fill: #fff; }
 
-    .team-desc {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
+    footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; max-width: 1100px; margin: 0 auto; }
+    .footer-brand { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+    .footer-note  { font-family: var(--mono); font-size: 0.65rem; color: var(--border2); text-align: right; }
 
-    .team-placeholder {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--border2);
-      font-style: italic;
-    }
-
-    /* ── CONTACT ── */
-    .contact-box {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 3rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.5rem;
-      max-width: 600px;
-    }
-
-    .contact-box p {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.8;
-    }
-
-    .discord-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.85rem 1.75rem;
-      background: #5865F2;
-      color: #fff;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .discord-btn:hover {
-      background: #4752c4;
-      transform: translateY(-1px);
-    }
-
-    .discord-icon {
-      width: 18px;
-      height: 18px;
-      fill: #fff;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: gap;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .footer-brand {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    .footer-note {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--border2);
-      text-align: right;
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
-    }
-
-    /* ── LOADING STATE ── */
-    .loading { color: var(--muted); font-family: var(--mono); font-size: 0.8rem; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse  { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="/" class="nav-brand">[BRAND]<span>.signal</span></a>
   <div class="nav-links">
@@ -595,7 +180,7 @@
     <a href="#team">Team</a>
     <a href="#contact">Contact</a>
     <a href="https://discord.gg/rY5TjxyB5" target="_blank" class="nav-discord">
-      <svg class="discord-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;fill:currentColor">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;fill:currentColor">
         <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
       </svg>
       Discord
@@ -603,7 +188,6 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <p class="hero-tag">Signal Intelligence — Forward Testing Live</p>
   <h1>Trade smarter.<br/>Not <em>harder.</em></h1>
@@ -615,12 +199,8 @@
     <a href="https://discord.gg/rY5TjxyB5" target="_blank" class="btn-secondary">Join Discord</a>
   </div>
 
-  <!-- LIVE STATS BAR -->
-  <div class="live-bar" id="liveBar">
-    <div class="live-indicator">
-      <div class="live-dot"></div>
-      LIVE DATA
-    </div>
+  <div class="live-bar">
+    <div class="live-indicator"><div class="live-dot"></div>LIVE DATA</div>
     <div class="stat-item">
       <span class="stat-label">Total PnL</span>
       <span class="stat-value" id="heroPnl">—</span>
@@ -642,13 +222,11 @@
 
 <hr class="divider"/>
 
-<!-- STRATEGIES -->
 <section id="strategies">
   <p class="section-tag">strategies</p>
   <h2 class="section-title">Live Forward Tests</h2>
   <div class="strategies-grid">
 
-    <!-- ALGOX CARD -->
     <a href="/algox" class="strategy-card">
       <div class="strategy-header">
         <span class="strategy-name">AlgoX</span>
@@ -657,42 +235,57 @@
       <div class="strategy-stats">
         <div class="strategy-stat">
           <span class="strategy-stat-label">Total PnL</span>
-          <span class="strategy-stat-value green" id="cardPnl">—</span>
+          <span class="strategy-stat-value green" id="algoxPnl">—</span>
         </div>
         <div class="strategy-stat">
           <span class="strategy-stat-label">Win Rate</span>
-          <span class="strategy-stat-value" id="cardWr">—</span>
+          <span class="strategy-stat-value" id="algoxWr">—</span>
         </div>
         <div class="strategy-stat">
           <span class="strategy-stat-label">Profit Factor</span>
-          <span class="strategy-stat-value" id="cardPf">—</span>
+          <span class="strategy-stat-value" id="algoxPf">—</span>
         </div>
       </div>
       <div class="strategy-footer">
-        <span class="strategy-pairs" id="cardTrades">— closed trades</span>
+        <span class="strategy-pairs" id="algoxTrades">— closed trades</span>
         <span class="strategy-cta">View Dashboard</span>
       </div>
     </a>
 
-    <!-- PULSE PLACEHOLDER -->
+    <a href="/superflow" class="strategy-card blue-accent">
+      <div class="strategy-header">
+        <span class="strategy-name blue">SuperFlow</span>
+        <span class="strategy-badge badge-live-blue">● Live</span>
+      </div>
+      <div class="strategy-stats">
+        <div class="strategy-stat">
+          <span class="strategy-stat-label">Total PnL</span>
+          <span class="strategy-stat-value blue" id="sfPnl">—</span>
+        </div>
+        <div class="strategy-stat">
+          <span class="strategy-stat-label">Win Rate</span>
+          <span class="strategy-stat-value" id="sfWr">—</span>
+        </div>
+        <div class="strategy-stat">
+          <span class="strategy-stat-label">Profit Factor</span>
+          <span class="strategy-stat-value" id="sfPf">—</span>
+        </div>
+      </div>
+      <div class="strategy-footer">
+        <span class="strategy-pairs" id="sfTrades">— closed trades</span>
+        <span class="strategy-cta blue">View Dashboard</span>
+      </div>
+    </a>
+
     <div class="strategy-card coming-soon">
       <div class="strategy-header">
         <span class="strategy-name">Pulse</span>
         <span class="strategy-badge badge-soon">Coming Soon</span>
       </div>
       <div class="strategy-stats">
-        <div class="strategy-stat">
-          <span class="strategy-stat-label">Total PnL</span>
-          <span class="strategy-stat-value">—</span>
-        </div>
-        <div class="strategy-stat">
-          <span class="strategy-stat-label">Win Rate</span>
-          <span class="strategy-stat-value">—</span>
-        </div>
-        <div class="strategy-stat">
-          <span class="strategy-stat-label">Profit Factor</span>
-          <span class="strategy-stat-value">—</span>
-        </div>
+        <div class="strategy-stat"><span class="strategy-stat-label">Total PnL</span><span class="strategy-stat-value">—</span></div>
+        <div class="strategy-stat"><span class="strategy-stat-label">Win Rate</span><span class="strategy-stat-value">—</span></div>
+        <div class="strategy-stat"><span class="strategy-stat-label">Profit Factor</span><span class="strategy-stat-value">—</span></div>
       </div>
       <div class="strategy-footer">
         <span class="strategy-pairs">Forward test pending</span>
@@ -705,25 +298,20 @@
 
 <hr class="divider"/>
 
-<!-- TEAM -->
 <section id="team">
   <p class="section-tag">team</p>
   <h2 class="section-title">Who We Are</h2>
   <div class="team-grid">
 
-    <!-- RAYNE -->
     <div class="team-card">
       <div class="team-avatar">R</div>
       <div>
         <div class="team-name">Rayne</div>
         <div class="team-role">Tech — Strategy Dev</div>
       </div>
-      <p class="team-desc">
-        The tech guy behind the scene. Builds and maintains the strategies, forward testing infrastructure, and everything that runs under the hood.
-      </p>
+      <p class="team-desc">The tech guy behind the scene. Builds and maintains the strategies, forward testing infrastructure, and everything that runs under the hood.</p>
     </div>
 
-    <!-- PARTNER PLACEHOLDER -->
     <div class="team-card">
       <div class="team-avatar" style="color:var(--muted)">?</div>
       <div>
@@ -738,71 +326,66 @@
 
 <hr class="divider"/>
 
-<!-- CONTACT -->
 <section id="contact">
   <p class="section-tag">contact</p>
   <h2 class="section-title">Get In Touch</h2>
   <div class="contact-box">
-    <p>
-      Interested in our signal service or have questions?<br/>
-      Reach us directly on Discord — we keep it simple.
-    </p>
+    <p>Interested in our signal service or have questions?<br/>Reach us directly on Discord — we keep it simple.</p>
     <a href="https://discord.gg/rY5TjxyB5" target="_blank" class="discord-btn">
       <svg class="discord-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
       </svg>
       Join our Discord
     </a>
-    <p style="font-size:0.7rem;">
-      Direct message: <span style="color:var(--text)">Rayne._0317</span>
-    </p>
+    <p style="font-size:0.7rem;">Direct message: <span style="color:var(--text)">Rayne._0317</span></p>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <span class="footer-brand">[BRAND] © 2026</span>
   <span class="footer-note">Forward test data is live and unfiltered.<br/>Past performance does not guarantee future results.</span>
 </footer>
 
 <script>
-  // Fetch live stats from AlgoX dashboard API
   async function loadStats() {
     try {
-      const res = await fetch('/api/stats');
-      const data = await res.json();
+      const [algoxRes, sfRes] = await Promise.all([
+        fetch('/api/stats?strategy=AlgoX'),
+        fetch('/api/stats?strategy=SuperFlow')
+      ]);
+      const algox = await algoxRes.json();
+      const sf    = await sfRes.json();
 
-      const pnl = data.total_pnl_pct;
-      const wr = data.win_rate;
-      const pf = data.profit_factor;
-      const trades = data.total_closed;
+      const totalTrades  = algox.total_closed + sf.total_closed;
+      const combinedPnl  = algox.total_pnl_pct + sf.total_pnl_pct;
+      document.getElementById('heroPnl').textContent  = (combinedPnl >= 0 ? '+' : '') + combinedPnl.toFixed(2) + '%';
+      document.getElementById('heroPnl').style.color  = combinedPnl >= 0 ? 'var(--green)' : 'var(--red)';
+      document.getElementById('heroWr').textContent   = '—';
+      document.getElementById('heroPf').textContent   = '—';
+      document.getElementById('heroTrades').textContent = totalTrades;
 
-      const pnlStr = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '%';
-      const pnlColor = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-      const pfColor = pf >= 2 ? 'var(--green)' : pf >= 1.2 ? '#f59e0b' : 'var(--red)';
-      const wrColor = wr >= 55 ? 'var(--green)' : wr >= 40 ? '#f59e0b' : 'var(--red)';
-
-      // Hero bar
-      document.getElementById('heroPnl').textContent = pnlStr;
-      document.getElementById('heroPnl').style.color = pnlColor;
-      document.getElementById('heroWr').textContent = wr.toFixed(1) + '%';
-      document.getElementById('heroWr').style.color = wrColor;
-      document.getElementById('heroPf').textContent = pf.toFixed(2);
-      document.getElementById('heroPf').style.color = pfColor;
-      document.getElementById('heroTrades').textContent = trades;
-
-      // Strategy card
-      document.getElementById('cardPnl').textContent = pnlStr;
-      document.getElementById('cardPnl').style.color = pnlColor;
-      document.getElementById('cardWr').textContent = wr.toFixed(1) + '%';
-      document.getElementById('cardWr').style.color = wrColor;
-      document.getElementById('cardPf').textContent = pf.toFixed(2);
-      document.getElementById('cardPf').style.color = pfColor;
-      document.getElementById('cardTrades').textContent = trades + ' closed trades';
-
+      setCard('algox', algox, 'green');
+      setCard('sf',    sf,    'blue');
     } catch(e) {
       console.error('Failed to load stats', e);
     }
+  }
+
+  function setCard(prefix, data, colorClass) {
+    const pnl = data.total_pnl_pct;
+    const wr  = data.win_rate;
+    const pf  = data.profit_factor;
+    const pnlColor = pnl >= 0 ? (colorClass === 'blue' ? 'var(--blue)' : 'var(--green)') : 'var(--red)';
+    const wrColor  = wr >= 55 ? 'var(--green)' : wr >= 40 ? '#f59e0b' : 'var(--red)';
+    const pfColor  = pf >= 2  ? 'var(--green)' : pf >= 1.2 ? '#f59e0b' : 'var(--red)';
+
+    document.getElementById(prefix + 'Pnl').textContent    = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '%';
+    document.getElementById(prefix + 'Pnl').style.color    = pnlColor;
+    document.getElementById(prefix + 'Wr').textContent     = wr.toFixed(1) + '%';
+    document.getElementById(prefix + 'Wr').style.color     = wrColor;
+    document.getElementById(prefix + 'Pf').textContent     = pf.toFixed(2);
+    document.getElementById(prefix + 'Pf').style.color     = pfColor;
+    document.getElementById(prefix + 'Trades').textContent = data.total_closed + ' closed trades';
   }
 
   loadStats();
