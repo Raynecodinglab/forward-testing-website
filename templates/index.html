@@ -1,3 +1,4 @@
+cat > /home/claude/index.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="/static/utils.js"></script>
 <style>
   :root {
     --bg:        #0a0a0c;
@@ -23,644 +25,186 @@
     --mono:      'IBM Plex Mono', monospace;
     --sans:      'IBM Plex Sans', sans-serif;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1.5;
-    min-height: 100vh;
-  }
-
-  /* ── Header ── */
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 24px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .logo {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    color: var(--green);
-    text-transform: uppercase;
-  }
+  body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; line-height: 1.5; min-height: 100vh; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+  .logo { font-size: 15px; font-weight: 600; letter-spacing: 0.12em; color: var(--green); text-transform: uppercase; }
   .logo span { color: var(--muted); font-weight: 300; }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .status-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 6px var(--green);
-    animation: pulse 2s infinite;
-    display: inline-block;
-    margin-right: 6px;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.4; }
-  }
-
-  .webhook-url {
-    color: var(--muted);
-    font-size: 11px;
-    background: #0f0f14;
-    border: 1px solid var(--border2);
-    padding: 4px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: border-color 0.2s;
-  }
+  .header-right { display: flex; align-items: center; gap: 20px; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; display: inline-block; margin-right: 6px; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .webhook-url { color: var(--muted); font-size: 11px; background: #0f0f14; border: 1px solid var(--border2); padding: 4px 10px; border-radius: 3px; cursor: pointer; transition: border-color 0.2s; }
   .webhook-url:hover { border-color: var(--green); color: var(--green); }
-
-  /* ── Layout ── */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
   .main { padding: 20px 24px; }
-
-  /* ── Metric Cards ── */
-  .metric-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-bottom: 20px;
-  }
-
-  .metric {
-    background: var(--surface);
-    padding: 18px 20px;
-  }
-
-  .metric-label {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .metric-value {
-    font-size: 26px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-
-  .metric-sub {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  .pos { color: var(--green); }
-  .neg { color: var(--red); }
-  .amb { color: var(--amber); }
-
-  /* ── Section ── */
-  .section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    margin-bottom: 20px;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 18px;
-    border-bottom: 1px solid var(--border);
-    background: #0f0f14;
-  }
-
-  .section-title {
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .section-badge {
-    font-size: 10px;
-    color: var(--green);
-    background: rgba(0,230,118,0.08);
-    border: 1px solid rgba(0,230,118,0.2);
-    padding: 2px 8px;
-    border-radius: 2px;
-  }
-
-  /* ── Chart ── */
-  .chart-wrap {
-    padding: 20px;
-    height: 220px;
-    position: relative;
-  }
-
-  .chart-empty {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-  }
-
-  /* ── Table ── */
+  .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 20px; }
+  .metric { background: var(--surface); padding: 18px 20px; }
+  .metric-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .metric-value { font-size: 26px; font-weight: 500; letter-spacing: -0.02em; color: var(--text); }
+  .metric-sub { font-size: 10px; color: var(--muted); margin-top: 4px; }
+  .pos { color: var(--green); } .neg { color: var(--red); } .amb { color: var(--amber); }
+  .section { background: var(--surface); border: 1px solid var(--border); margin-bottom: 20px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid var(--border); background: #0f0f14; }
+  .section-title { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .section-badge { font-size: 10px; color: var(--green); background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2); padding: 2px 8px; border-radius: 2px; }
+  .chart-wrap { padding: 20px; height: 220px; position: relative; }
+  .chart-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 12px; letter-spacing: 0.08em; }
   .table-wrap { overflow-x: auto; }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  thead th {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 10px 18px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s;
-  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 10px 18px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
   tbody tr:hover { background: rgba(255,255,255,0.02); }
   tbody tr:last-child { border-bottom: none; }
-
-  td {
-    padding: 10px 18px;
-    font-size: 12px;
-    white-space: nowrap;
-  }
-
-  .empty-row td {
-    color: var(--muted);
-    text-align: center;
-    padding: 24px;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-  }
-
-  /* ── Side badges ── */
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 2px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-  }
+  td { padding: 10px 18px; font-size: 12px; white-space: nowrap; }
+  .empty-row td { color: var(--muted); text-align: center; padding: 24px; font-size: 11px; letter-spacing: 0.1em; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; }
   .badge-long  { background: rgba(0,230,118,0.1);  color: var(--green); border: 1px solid rgba(0,230,118,0.25); }
   .badge-short { background: rgba(255,61,87,0.1);  color: var(--red);   border: 1px solid rgba(255,61,87,0.25); }
   .badge-open  { background: rgba(255,171,0,0.1);  color: var(--amber); border: 1px solid rgba(255,171,0,0.25); }
-
-  /* ── Two-column layout ── */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-
-  /* ── Per-coin table ── */
-  .coin-bar {
-    height: 3px;
-    background: var(--border2);
-    border-radius: 2px;
-    margin-top: 4px;
-    overflow: hidden;
-  }
-  .coin-bar-fill {
-    height: 100%;
-    border-radius: 2px;
-    background: var(--green);
-    transition: width 0.5s ease;
-  }
-
-  /* ── Footer ── */
-  footer {
-    padding: 16px 24px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-  }
-
-  /* ── Toast ── */
-  #toast {
-    position: fixed;
-    bottom: 24px; right: 24px;
-    background: var(--surface);
-    border: 1px solid var(--green);
-    color: var(--green);
-    padding: 10px 16px;
-    font-size: 12px;
-    border-radius: 3px;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-    max-width: 360px;
-    z-index: 999;
-  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .coin-bar { height: 3px; background: var(--border2); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .coin-bar-fill { height: 100%; border-radius: 2px; background: var(--green); transition: width 0.5s ease; }
+  footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 10px; letter-spacing: 0.1em; }
+  #toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--green); color: var(--green); padding: 10px 16px; font-size: 12px; border-radius: 3px; opacity: 0; transition: opacity 0.3s; pointer-events: none; max-width: 360px; z-index: 999; }
   #toast.show { opacity: 1; }
-
-  /* ── Responsive ── */
-  @media (max-width: 900px) {
-    .metric-row { grid-template-columns: repeat(2, 1fr); }
-    .two-col    { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 900px) { .metric-row { grid-template-columns: repeat(2, 1fr); } .two-col { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-
 <header>
   <div class="logo">AlgoX <span>/ Forward Test</span></div>
   <div class="header-right">
-    <span style="font-size:11px; color:var(--muted)">
-      <span class="status-dot"></span>LIVE
-    </span>
-    <span class="webhook-url" onclick="copyWebhook()" title="Click to copy">
-      POST /webhook
-    </span>
+    <a href="/" style="font-size:11px;color:var(--muted);text-decoration:none;">← Home</a>
+    <span style="font-size:11px; color:var(--muted)"><span class="status-dot"></span>LIVE</span>
+    <span class="webhook-url" onclick="copyWebhook()" title="Click to copy">POST /webhook</span>
     <span id="last-update" style="font-size:10px; color:var(--muted)">–</span>
   </div>
 </header>
-
 <div class="main">
-
-  <!-- ── Metrics ── -->
   <div class="metric-row">
-    <div class="metric">
-      <div class="metric-label">Total PnL</div>
-      <div class="metric-value" id="m-pnl">–</div>
-      <div class="metric-sub" id="m-pnl-sub">closed trades</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Win Rate</div>
-      <div class="metric-value" id="m-wr">–</div>
-      <div class="metric-sub" id="m-wr-sub">of closed trades</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Profit Factor</div>
-      <div class="metric-value" id="m-pf">–</div>
-      <div class="metric-sub">gross profit / gross loss</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Open Positions</div>
-      <div class="metric-value" id="m-open">–</div>
-      <div class="metric-sub" id="m-trades-sub">total closed: 0</div>
-    </div>
+    <div class="metric"><div class="metric-label">Total PnL</div><div class="metric-value" id="m-pnl">–</div><div class="metric-sub">closed trades</div></div>
+    <div class="metric"><div class="metric-label">Win Rate</div><div class="metric-value" id="m-wr">–</div><div class="metric-sub" id="m-wr-sub">of closed trades</div></div>
+    <div class="metric"><div class="metric-label">Profit Factor</div><div class="metric-value" id="m-pf">–</div><div class="metric-sub">gross profit / gross loss</div></div>
+    <div class="metric"><div class="metric-label">Open Positions</div><div class="metric-value" id="m-open">–</div><div class="metric-sub" id="m-trades-sub">total closed: 0</div></div>
   </div>
-
-  <!-- ── Equity Curve ── -->
   <div class="section" style="margin-bottom:20px;">
-    <div class="section-header">
-      <span class="section-title">Equity Curve</span>
-      <span class="section-badge" id="curve-badge">cumulative % return</span>
-    </div>
-    <div class="chart-wrap">
-      <canvas id="equity-chart"></canvas>
-      <div class="chart-empty" id="chart-empty">NO CLOSED TRADES YET</div>
-    </div>
+    <div class="section-header"><span class="section-title">Equity Curve</span><span class="section-badge">cumulative % return</span></div>
+    <div class="chart-wrap"><canvas id="equity-chart"></canvas><div class="chart-empty" id="chart-empty">NO CLOSED TRADES YET</div></div>
   </div>
-
-  <!-- ── Positions + Per-Coin ── -->
   <div class="two-col">
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-title">Open Positions</span>
-        <span class="section-badge" id="pos-count">0</span>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Ticker</th>
-              <th>Side</th>
-              <th>Entry</th>
-              <th>TP</th>
-              <th>SL</th>
-              <th>Since</th>
-            </tr>
-          </thead>
-          <tbody id="tbl-positions">
-            <tr class="empty-row"><td colspan="6">NO OPEN POSITIONS</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="section-header"><span class="section-title">Open Positions</span><span class="section-badge" id="pos-count">0</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Ticker</th><th>Side</th><th>Entry</th><th>TP</th><th>SL</th><th>Since</th></tr></thead><tbody id="tbl-positions"><tr class="empty-row"><td colspan="6">NO OPEN POSITIONS</td></tr></tbody></table></div>
     </div>
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-title">Per-Coin Breakdown</span>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Ticker</th>
-              <th>Trades</th>
-              <th>Win%</th>
-              <th>PnL %</th>
-            </tr>
-          </thead>
-          <tbody id="tbl-coins">
-            <tr class="empty-row"><td colspan="4">NO DATA YET</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="section-header"><span class="section-title">Per-Coin Breakdown</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Ticker</th><th>Trades</th><th>Win%</th><th>PnL %</th></tr></thead><tbody id="tbl-coins"><tr class="empty-row"><td colspan="4">NO DATA YET</td></tr></tbody></table></div>
     </div>
-
   </div>
-
-  <!-- ── Trade History ── -->
   <div class="section">
-    <div class="section-header">
-      <span class="section-title">Trade History</span>
-      <span class="section-badge" id="hist-count">last 50</span>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Ticker</th>
-            <th>Side</th>
-            <th>Entry $</th>
-            <th>Exit $</th>
-            <th>PnL %</th>
-            <th>Opened</th>
-            <th>Closed</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-history">
-          <tr class="empty-row"><td colspan="8">NO TRADES YET</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="section-header"><span class="section-title">Trade History</span><span class="section-badge" id="hist-count">last 50</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Ticker</th><th>Side</th><th>Entry $</th><th>Exit $</th><th>PnL %</th><th>Opened</th><th>Closed</th><th>Status</th></tr></thead><tbody id="tbl-history"><tr class="empty-row"><td colspan="8">NO TRADES YET</td></tr></tbody></table></div>
   </div>
-
 </div>
-
-<footer>
-  <span>ALGOX FORWARD TEST DASHBOARD</span>
-  <span id="footer-time">–</span>
-</footer>
-
+<footer><span>ALGOX FORWARD TEST DASHBOARD</span><span id="footer-time">–</span></footer>
 <div id="toast"></div>
-
 <script>
-// ── State ──────────────────────────────────────────────────────────────────
 let equityChart = null;
-
-// ── Chart init ─────────────────────────────────────────────────────────────
 function initChart() {
   const ctx = document.getElementById('equity-chart').getContext('2d');
   equityChart = new Chart(ctx, {
     type: 'line',
-    data: { labels: [], datasets: [{
-      label: 'Cumulative PnL %',
-      data: [],
-      borderColor: '#00e676',
-      backgroundColor: 'rgba(0,230,118,0.06)',
-      borderWidth: 1.5,
-      pointRadius: 0,
-      pointHoverRadius: 4,
-      fill: true,
-      tension: 0.3
-    }]},
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#111115',
-          borderColor: '#1e1e24',
-          borderWidth: 1,
-          titleColor: '#606070',
-          bodyColor: '#00e676',
-          titleFont: { family: "'IBM Plex Mono'" },
-          bodyFont:  { family: "'IBM Plex Mono'" },
-          callbacks: { label: ctx => ` ${ctx.parsed.y.toFixed(2)}%` }
-        }
-      },
-      scales: {
-        x: {
-          ticks: { color: '#606070', font: { family: "'IBM Plex Mono'", size: 10 }, maxTicksLimit: 8 },
-          grid:  { color: '#1e1e24' }
-        },
-        y: {
-          ticks: {
-            color: '#606070',
-            font: { family: "'IBM Plex Mono'", size: 10 },
-            callback: v => v.toFixed(1) + '%'
-          },
-          grid: { color: '#1e1e24' }
-        }
-      }
-    }
+    data: { labels: [], datasets: [{ label: 'Cumulative PnL %', data: [], borderColor: '#00e676', backgroundColor: 'rgba(0,230,118,0.06)', borderWidth: 1.5, pointRadius: 0, pointHoverRadius: 4, fill: true, tension: 0.3 }]},
+    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#111115', borderColor: '#1e1e24', borderWidth: 1, titleColor: '#606070', bodyColor: '#00e676', titleFont: { family: "'IBM Plex Mono'" }, bodyFont: { family: "'IBM Plex Mono'" }, callbacks: { label: ctx => ` ${ctx.parsed.y.toFixed(2)}%` } } }, scales: { x: { ticks: { color: '#606070', font: { family: "'IBM Plex Mono'", size: 10 }, maxTicksLimit: 8 }, grid: { color: '#1e1e24' } }, y: { ticks: { color: '#606070', font: { family: "'IBM Plex Mono'", size: 10 }, callback: v => v.toFixed(1) + '%' }, grid: { color: '#1e1e24' } } } }
   });
 }
-
-// ── Fetch & Render ─────────────────────────────────────────────────────────
 async function fetchStats() {
   try {
     const [statsRes, posRes, tradeRes] = await Promise.all([
-      fetch('/api/stats'),
-      fetch('/api/positions'),
-      fetch('/api/trades')
+      fetch('/api/stats?strategy=AlgoX'),
+      fetch('/api/positions?strategy=AlgoX'),
+      fetch('/api/trades?strategy=AlgoX')
     ]);
-    const stats    = await statsRes.json();
+    const stats = await statsRes.json();
     const positions = await posRes.json();
-    const trades   = await tradeRes.json();
-
-    renderMetrics(stats);
-    renderEquity(stats.equity_curve);
-    renderPositions(positions);
-    renderCoins(stats.per_coin);
-    renderHistory(trades);
-
-    document.getElementById('last-update').textContent =
-      'updated ' + new Date().toLocaleTimeString();
-    document.getElementById('footer-time').textContent =
-      new Date().toUTCString();
-  } catch (e) {
-    console.error('Fetch error:', e);
-  }
+    const trades = await tradeRes.json();
+    renderMetrics(stats); renderEquity(stats.equity_curve); renderPositions(positions); renderCoins(stats.per_coin); renderHistory(trades);
+    document.getElementById('last-update').textContent = 'updated ' + new Date().toLocaleTimeString();
+    document.getElementById('footer-time').textContent = new Date().toUTCString();
+  } catch (e) { console.error('Fetch error:', e); }
 }
-
 function renderMetrics(s) {
   const pnl = s.total_pnl_pct;
   const pnlEl = document.getElementById('m-pnl');
   pnlEl.textContent = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '%';
   pnlEl.className = 'metric-value ' + (pnl >= 0 ? 'pos' : 'neg');
-
   const wr = s.win_rate;
   const wrEl = document.getElementById('m-wr');
   wrEl.textContent = wr.toFixed(1) + '%';
   wrEl.className = 'metric-value ' + (wr >= 50 ? 'pos' : wr >= 40 ? 'amb' : 'neg');
-  document.getElementById('m-wr-sub').textContent =
-    s.total_closed + ' closed — avg win ' + s.avg_win.toFixed(2) + '% / loss ' + s.avg_loss.toFixed(2) + '%';
-
+  document.getElementById('m-wr-sub').textContent = s.total_closed + ' closed — avg win ' + s.avg_win.toFixed(2) + '% / loss ' + s.avg_loss.toFixed(2) + '%';
   const pf = s.profit_factor;
   const pfEl = document.getElementById('m-pf');
   pfEl.textContent = pf.toFixed(2);
   pfEl.className = 'metric-value ' + (pf >= 1.5 ? 'pos' : pf >= 1.0 ? 'amb' : 'neg');
-
   document.getElementById('m-open').textContent = s.open_positions;
   document.getElementById('m-trades-sub').textContent = 'total closed: ' + s.total_closed;
 }
-
 function renderEquity(curve) {
   const empty = document.getElementById('chart-empty');
-  if (!curve || curve.length === 0) {
-    empty.style.display = 'flex';
-    return;
-  }
+  if (!curve || curve.length === 0) { empty.style.display = 'flex'; return; }
   empty.style.display = 'none';
-
-  equityChart.data.labels   = curve.map(p => p.time);
+  equityChart.data.labels = curve.map(p => p.time);
   equityChart.data.datasets[0].data = curve.map(p => p.value);
-
-  // Color line based on final value
   const last = curve[curve.length - 1].value;
-  equityChart.data.datasets[0].borderColor      = last >= 0 ? '#00e676' : '#ff3d57';
-  equityChart.data.datasets[0].backgroundColor  = last >= 0 ? 'rgba(0,230,118,0.06)' : 'rgba(255,61,87,0.06)';
+  equityChart.data.datasets[0].borderColor = last >= 0 ? '#00e676' : '#ff3d57';
+  equityChart.data.datasets[0].backgroundColor = last >= 0 ? 'rgba(0,230,118,0.06)' : 'rgba(255,61,87,0.06)';
   equityChart.update();
 }
-
 function renderPositions(positions) {
   const tbody = document.getElementById('tbl-positions');
   document.getElementById('pos-count').textContent = positions.length;
-
-  if (positions.length === 0) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">NO OPEN POSITIONS</td></tr>';
-    return;
-  }
-
+  if (positions.length === 0) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">NO OPEN POSITIONS</td></tr>'; return; }
   tbody.innerHTML = positions.map(p => {
     const since = p.entry_time ? p.entry_time.slice(0,16).replace('T',' ') : '–';
-    return `<tr>
-      <td>${p.ticker}</td>
-      <td><span class="badge badge-${p.action}">${p.action.toUpperCase()}</span></td>
-      <td>${p.entry_price ? '$' + p.entry_price.toFixed(2) : '–'}</td>
-      <td>${p.tp ? '$' + p.tp.toFixed(2) : '–'}</td>
-      <td>${p.sl ? '$' + p.sl.toFixed(2) : '–'}</td>
-      <td style="color:var(--muted)">${since}</td>
-    </tr>`;
+    return `<tr><td>${p.ticker}</td><td><span class="badge badge-${p.action}">${p.action.toUpperCase()}</span></td><td>${formatPrice(p.entry_price)}</td><td>${formatPrice(p.tp)}</td><td>${formatPrice(p.sl)}</td><td style="color:var(--muted)">${since}</td></tr>`;
   }).join('');
 }
-
 function renderCoins(perCoin) {
   const tbody = document.getElementById('tbl-coins');
   const coins = Object.entries(perCoin);
-
-  if (coins.length === 0) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="4">NO DATA YET</td></tr>';
-    return;
-  }
-
-  // Sort by PnL descending
+  if (coins.length === 0) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">NO DATA YET</td></tr>'; return; }
   coins.sort((a, b) => b[1].pnl_pct - a[1].pnl_pct);
   const maxAbs = Math.max(...coins.map(c => Math.abs(c[1].pnl_pct)), 1);
-
   tbody.innerHTML = coins.map(([ticker, d]) => {
     const pnlClass = d.pnl_pct >= 0 ? 'pos' : 'neg';
     const barColor = d.pnl_pct >= 0 ? 'var(--green)' : 'var(--red)';
     const barW = Math.abs(d.pnl_pct) / maxAbs * 100;
-    return `<tr>
-      <td>${ticker}</td>
-      <td>${d.trades}</td>
-      <td class="${d.win_rate >= 50 ? 'pos' : 'neg'}">${d.win_rate}%</td>
-      <td>
-        <span class="${pnlClass}">${d.pnl_pct >= 0 ? '+' : ''}${d.pnl_pct.toFixed(2)}%</span>
-        <div class="coin-bar"><div class="coin-bar-fill" style="width:${barW}%;background:${barColor}"></div></div>
-      </td>
-    </tr>`;
+    return `<tr><td>${ticker}</td><td>${d.trades}</td><td class="${d.win_rate >= 50 ? 'pos' : 'neg'}">${d.win_rate}%</td><td><span class="${pnlClass}">${d.pnl_pct >= 0 ? '+' : ''}${d.pnl_pct.toFixed(2)}%</span><div class="coin-bar"><div class="coin-bar-fill" style="width:${barW}%;background:${barColor}"></div></div></td></tr>`;
   }).join('');
 }
-
 function renderHistory(trades) {
   const tbody = document.getElementById('tbl-history');
   const closed = trades.filter(t => t.status === 'closed').slice(0, 50);
   document.getElementById('hist-count').textContent = closed.length + ' closed';
-
-  if (trades.length === 0) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">NO TRADES YET</td></tr>';
-    return;
-  }
-
+  if (trades.length === 0) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">NO TRADES YET</td></tr>'; return; }
   tbody.innerHTML = trades.slice(0, 60).map(t => {
     const pnlClass = (t.pnl_pct || 0) >= 0 ? 'pos' : 'neg';
-    const pnlStr = t.status === 'closed'
-      ? `<span class="${pnlClass}">${(t.pnl_pct >= 0 ? '+' : '') + t.pnl_pct.toFixed(2)}%</span>`
-      : '<span style="color:var(--muted)">–</span>';
+    const pnlStr = t.status === 'closed' ? `<span class="${pnlClass}">${(t.pnl_pct >= 0 ? '+' : '') + t.pnl_pct.toFixed(2)}%</span>` : '<span style="color:var(--muted)">–</span>';
     const openedStr = t.entry_time ? t.entry_time.slice(0,16).replace('T',' ') : '–';
     const closedStr = t.exit_time  ? t.exit_time.slice(0,16).replace('T',' ')  : '–';
-    const statusBadge = t.status === 'open'
-      ? '<span class="badge badge-open">OPEN</span>'
-      : '<span style="color:var(--muted);font-size:10px">CLOSED</span>';
-    return `<tr>
-      <td>${t.ticker}</td>
-      <td><span class="badge badge-${t.action}">${t.action.toUpperCase()}</span></td>
-      <td>$${t.entry_price.toFixed(2)}</td>
-      <td>${t.exit_price ? '$' + t.exit_price.toFixed(2) : '–'}</td>
-      <td>${pnlStr}</td>
-      <td style="color:var(--muted)">${openedStr}</td>
-      <td style="color:var(--muted)">${closedStr}</td>
-      <td>${statusBadge}</td>
-    </tr>`;
+    const statusBadge = t.status === 'open' ? '<span class="badge badge-open">OPEN</span>' : '<span style="color:var(--muted);font-size:10px">CLOSED</span>';
+    return `<tr><td>${t.ticker}</td><td><span class="badge badge-${t.action}">${t.action.toUpperCase()}</span></td><td>${formatPrice(t.entry_price)}</td><td>${formatPrice(t.exit_price)}</td><td>${pnlStr}</td><td style="color:var(--muted)">${openedStr}</td><td style="color:var(--muted)">${closedStr}</td><td>${statusBadge}</td></tr>`;
   }).join('');
 }
-
-// ── Webhook URL copy ───────────────────────────────────────────────────────
 function copyWebhook() {
   const url = window.location.origin + '/webhook';
   navigator.clipboard.writeText(url).then(() => toast('Webhook URL copied: ' + url));
 }
-
 function toast(msg) {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 3000);
 }
-
-// ── Boot ───────────────────────────────────────────────────────────────────
 initChart();
 fetchStats();
 setInterval(fetchStats, 5000);
