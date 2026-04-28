@@ -6,7 +6,7 @@
 <title>SuperFlow Forward Test</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script> <script src="/static/utils.js"></script>
 <style>
   :root {
     --bg:        #0a0a0c;
@@ -557,9 +557,9 @@ function renderPositions(positions) {
     return `<tr>
       <td>${p.ticker}</td>
       <td><span class="badge badge-${p.action}">${p.action.toUpperCase()}</span></td>
-      <td>${p.entry_price ? '$' + p.entry_price.toFixed(2) : '–'}</td>
-      <td>${p.tp ? '$' + p.tp.toFixed(2) : '–'}</td>
-      <td>${p.sl ? '$' + p.sl.toFixed(2) : '–'}</td>
+      <td>${formatPrice(p.entry_price)}</td>
+      <td>${formatPrice(p.tp)}</td>
+      <td>${formatPrice(p.sl)}</td>
       <td style="color:var(--muted)">${since}</td>
     </tr>`;
   }).join('');
@@ -616,8 +616,8 @@ function renderHistory(trades) {
     return `<tr>
       <td>${t.ticker}</td>
       <td><span class="badge badge-${t.action}">${t.action.toUpperCase()}</span></td>
-      <td>$${t.entry_price.toFixed(2)}</td>
-      <td>${t.exit_price ? '$' + t.exit_price.toFixed(2) : '–'}</td>
+      <td>${formatPrice(t.entry_price)}</td>
+      <td>${formatPrice(t.exit_price)}</td>
       <td>${pnlStr}</td>
       <td style="color:var(--muted)">${openedStr}</td>
       <td style="color:var(--muted)">${closedStr}</td>
