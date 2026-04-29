@@ -17,8 +17,10 @@
       --green:     #00ff88;
       --green-dim: #00cc6a;
       --green-glow:#00ff8833;
-      --blue:      #00b0ff;
-      --blue-glow: #00b0ff33;
+      --blue:       #00b0ff;
+      --blue-glow:  #00b0ff33;
+      --purple:     #b060ff;
+      --purple-glow:#b060ff33;
       --red:       #ff4466;
       --text:      #e8e8e8;
       --muted:     #666;
@@ -127,21 +129,27 @@
     .strategy-badge { font-family: var(--mono); font-size: 0.6rem; padding: 0.2rem 0.6rem; border-radius: 3px; letter-spacing: 0.1em; text-transform: uppercase; }
     .badge-live      { background: var(--green-glow); color: var(--green); border: 1px solid var(--green); }
     .badge-live-blue { background: var(--blue-glow);  color: var(--blue);  border: 1px solid var(--blue); }
+    .badge-live-purple { background: var(--purple-glow); color: var(--purple); border: 1px solid var(--purple); }
     .badge-soon      { background: #1a1a1a; color: var(--muted); border: 1px solid var(--border2); }
 
     .strategy-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
     .strategy-stat  { display: flex; flex-direction: column; gap: 0.2rem; }
     .strategy-stat-label { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
     .strategy-stat-value { font-family: var(--mono); font-size: 0.95rem; color: var(--text); }
-    .strategy-stat-value.green { color: var(--green); }
-    .strategy-stat-value.blue  { color: var(--blue); }
-    .strategy-stat-value.red   { color: var(--red); }
-    .strategy-stat-value.amber { color: #f59e0b; }
+    .strategy-stat-value.green  { color: var(--green); }
+    .strategy-stat-value.blue   { color: var(--blue); }
+    .strategy-stat-value.purple { color: var(--purple); }
+    .strategy-stat-value.red    { color: var(--red); }
+    .strategy-stat-value.amber  { color: #f59e0b; }
+    .strategy-name.blue   { color: var(--blue); }
+    .strategy-name.purple { color: var(--purple); }
+    .strategy-card.purple-accent::before { background: var(--purple); }
 
     .strategy-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border); }
     .strategy-pairs  { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
     .strategy-cta    { font-family: var(--mono); font-size: 0.7rem; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 0.3rem; }
-    .strategy-cta.blue { color: var(--blue); }
+    .strategy-cta.blue   { color: var(--blue); }
+    .strategy-cta.purple { color: var(--purple); }
     .strategy-cta::after { content: ' →'; }
     .strategy-card.coming-soon { opacity: 0.5; pointer-events: none; }
 
@@ -274,6 +282,31 @@
       <div class="strategy-footer">
         <span class="strategy-pairs" id="sfTrades">— closed trades</span>
         <span class="strategy-cta blue">View Dashboard</span>
+      </div>
+    </a>
+
+    <a href="/zonesniper" class="strategy-card purple-accent">
+      <div class="strategy-header">
+        <span class="strategy-name purple">ZoneSniper</span>
+        <span class="strategy-badge badge-live-purple">● Live</span>
+      </div>
+      <div class="strategy-stats">
+        <div class="strategy-stat">
+          <span class="strategy-stat-label">Total PnL</span>
+          <span class="strategy-stat-value purple" id="zsPnl">—</span>
+        </div>
+        <div class="strategy-stat">
+          <span class="strategy-stat-label">Win Rate</span>
+          <span class="strategy-stat-value" id="zsWr">—</span>
+        </div>
+        <div class="strategy-stat">
+          <span class="strategy-stat-label">Profit Factor</span>
+          <span class="strategy-stat-value" id="zsPf">—</span>
+        </div>
+      </div>
+      <div class="strategy-footer">
+        <span class="strategy-pairs" id="zsTrades">— closed trades</span>
+        <span class="strategy-cta purple">View Dashboard</span>
       </div>
     </a>
 
